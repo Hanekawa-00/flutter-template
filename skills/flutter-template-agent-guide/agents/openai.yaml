@@ -1,0 +1,4 @@
+interface:
+  display_name: "Flutter Template Agent Guide"
+  short_description: "Complete project-specific guide for this Flutter template."
+  default_prompt: "Use the Flutter template agent guide to implement the requested project change."
