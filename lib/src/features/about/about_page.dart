@@ -17,10 +17,18 @@ class AboutPage extends ConsumerWidget {
     final config = ref.watch(appConfigProvider);
 
     return PageFrame(
+      storageId: 'settings-about',
       title: l10n.aboutTitle,
       subtitle: l10n.aboutSubtitle,
       trailing: OutlinedButton.icon(
-        onPressed: () => context.go('/settings'),
+        onPressed: () {
+          if (context.canPop()) {
+            context.pop();
+            return;
+          }
+
+          context.go('/settings');
+        },
         icon: const Icon(Icons.arrow_back_rounded),
         label: Text(l10n.aboutBackToSettings),
       ),

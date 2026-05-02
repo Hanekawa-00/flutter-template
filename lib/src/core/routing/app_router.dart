@@ -11,30 +11,47 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: '/',
     routes: [
-      ShellRoute(
-        builder: (context, state, child) {
-          return AppShell(location: state.uri.path, child: child);
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return AppShell(
+            location: state.uri.path,
+            navigationShell: navigationShell,
+          );
         },
-        routes: [
-          GoRoute(
-            path: '/',
-            name: 'home',
-            builder: (context, state) => const HomePage(),
+        branches: [
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/',
+                name: 'home',
+                builder: (context, state) => const HomePage(),
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/settings',
-            name: 'settings',
-            builder: (context, state) => const SettingsPage(),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/settings',
+                name: 'settings',
+                builder: (context, state) => const SettingsPage(),
+                routes: [
+                  GoRoute(
+                    path: 'about',
+                    name: 'settings-about',
+                    builder: (context, state) => const AboutPage(),
+                  ),
+                ],
+              ),
+            ],
           ),
-          GoRoute(
-            path: '/settings/about',
-            name: 'settings-about',
-            builder: (context, state) => const AboutPage(),
-          ),
-          GoRoute(
-            path: '/components',
-            name: 'components',
-            builder: (context, state) => const ComponentGalleryPage(),
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/components',
+                name: 'components',
+                builder: (context, state) => const ComponentGalleryPage(),
+              ),
+            ],
           ),
         ],
       ),

@@ -9,12 +9,14 @@ class PageFrame extends StatelessWidget {
     this.subtitle,
     required this.children,
     this.trailing,
+    this.storageId,
   });
 
   final String title;
   final String? subtitle;
   final List<Widget> children;
   final Widget? trailing;
+  final String? storageId;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class PageFrame extends StatelessWidget {
       top: !compact,
       bottom: false,
       child: CustomScrollView(
+        key: PageStorageKey<String>('page-frame-scroll-${storageId ?? title}'),
         slivers: [
           if (!compact)
             SliverPersistentHeader(

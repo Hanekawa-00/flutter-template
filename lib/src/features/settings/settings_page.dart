@@ -43,6 +43,7 @@ class SettingsPage extends ConsumerWidget {
     }
 
     return PageFrame(
+      storageId: 'settings',
       title: l10n.settingsTitle,
       subtitle: l10n.settingsSubtitle,
       children: [
@@ -137,7 +138,7 @@ class SettingsPage extends ConsumerWidget {
               title: Text(l10n.aboutTitle),
               subtitle: Text(l10n.aboutSubtitle),
               trailing: const Icon(Icons.chevron_right_rounded),
-              onTap: () => context.go('/settings/about'),
+              onTap: () => context.push('/settings/about'),
             ),
             _PreferenceTile(
               icon: Icons.restart_alt_rounded,
