@@ -22,7 +22,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Flutter Template'), findsWidgets);
-    expect(find.text('模板已就绪'), findsOneWidget);
+    expect(find.text('Template ready'), findsOneWidget);
     expect(find.byIcon(Icons.tune), findsWidgets);
   });
 }

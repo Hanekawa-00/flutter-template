@@ -1,29 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../../core/config/config_providers.dart';
+import '../../core/localization/localization_extensions.dart';
 import '../../shared/widgets/page_frame.dart';
 import '../../shared/widgets/section_card.dart';
 
-class AboutPage extends StatelessWidget {
+class AboutPage extends ConsumerWidget {
   const AboutPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final config = ref.watch(appConfigProvider);
+
     return PageFrame(
-      title: '关于',
-      subtitle: '一个偏通用、可扩展、跨平台优先的 Flutter 模板。',
+      title: l10n.aboutTitle,
+      subtitle: l10n.aboutSubtitle,
       children: [
         SectionCard(
-          title: '项目结构',
+          title: l10n.aboutStructureTitle,
           icon: Icons.account_tree_outlined,
-          children: const [
-            _InfoRow(label: 'core', value: '路由、主题、设置等基础设施'),
-            _InfoRow(label: 'features', value: '按业务功能拆分页面与状态'),
-            _InfoRow(label: 'shared', value: '跨功能复用的通用组件'),
+          children: [
+            _InfoRow(label: l10n.aboutCoreLabel, value: l10n.aboutCoreValue),
+            _InfoRow(
+              label: l10n.aboutFeaturesLabel,
+              value: l10n.aboutFeaturesValue,
+            ),
+            _InfoRow(
+              label: l10n.aboutSharedLabel,
+              value: l10n.aboutSharedValue,
+            ),
           ],
         ),
         SectionCard(
-          title: '版本',
+          title: l10n.aboutVersionTitle,
           icon: Icons.info_outline,
           children: [
             FutureBuilder<PackageInfo>(
@@ -34,19 +46,45 @@ class AboutPage extends StatelessWidget {
                 return Column(
                   children: [
                     _InfoRow(
-                      label: '应用名',
-                      value: info?.appName ?? 'Flutter Template',
+                      label: l10n.aboutAppNameLabel,
+                      value: info?.appName ?? l10n.appTitle,
                     ),
                     _InfoRow(
-                      label: '包名',
+                      label: l10n.aboutPackageLabel,
                       value:
                           info?.packageName ?? 'com.example.flutter_template',
                     ),
-                    _InfoRow(label: '版本', value: info?.version ?? '1.0.0'),
-                    _InfoRow(label: '构建号', value: info?.buildNumber ?? '1'),
+                    _InfoRow(
+                      label: l10n.aboutVersionLabel,
+                      value: info?.version ?? '1.0.0',
+                    ),
+                    _InfoRow(
+                      label: l10n.aboutBuildLabel,
+                      value: info?.buildNumber ?? '1',
+                    ),
                   ],
                 );
               },
+            ),
+          ],
+        ),
+        SectionCard(
+          title: l10n.aboutEnvironmentTitle,
+          icon: Icons.settings_applications_outlined,
+          children: [
+            _InfoRow(
+              label: l10n.aboutEnvironmentLabel,
+              value: config.environment.label,
+            ),
+            _InfoRow(
+              label: l10n.aboutApiBaseUrlLabel,
+              value: config.apiBaseUrl,
+            ),
+            _InfoRow(
+              label: l10n.aboutVerboseLogsLabel,
+              value: config.enableVerboseLogs
+                  ? l10n.commonEnabled
+                  : l10n.commonDisabled,
             ),
           ],
         ),

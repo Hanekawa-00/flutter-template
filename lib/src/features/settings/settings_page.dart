@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../core/localization/localization_extensions.dart';
 import '../../core/settings/app_settings.dart';
 import '../../core/settings/settings_providers.dart';
 import '../../shared/widgets/page_frame.dart';
@@ -11,39 +12,40 @@ class SettingsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
     final asyncSettings = ref.watch(appSettingsControllerProvider);
     final settings = asyncSettings.asData?.value ?? AppSettings.defaults();
     final controller = ref.read(appSettingsControllerProvider.notifier);
 
     return PageFrame(
-      title: '设置',
-      subtitle: '模板只保留通用偏好，后续业务设置可以继续按分组追加。',
+      title: l10n.settingsTitle,
+      subtitle: l10n.settingsSubtitle,
       children: [
         if (asyncSettings.hasError)
           _ErrorBanner(error: asyncSettings.error.toString()),
         SectionCard(
-          title: '外观',
+          title: l10n.settingsAppearanceTitle,
           icon: Icons.palette_outlined,
           children: [
             _SettingBlock(
-              title: '主题模式',
-              subtitle: '跟随系统、浅色或深色。',
+              title: l10n.settingsThemeModeTitle,
+              subtitle: l10n.settingsThemeModeSubtitle,
               child: SegmentedButton<ThemeMode>(
-                segments: const [
+                segments: [
                   ButtonSegment(
                     value: ThemeMode.system,
-                    icon: Icon(Icons.brightness_auto_outlined),
-                    label: Text('系统'),
+                    icon: const Icon(Icons.brightness_auto_outlined),
+                    label: Text(l10n.themeModeSystem),
                   ),
                   ButtonSegment(
                     value: ThemeMode.light,
-                    icon: Icon(Icons.light_mode_outlined),
-                    label: Text('浅色'),
+                    icon: const Icon(Icons.light_mode_outlined),
+                    label: Text(l10n.themeModeLight),
                   ),
                   ButtonSegment(
                     value: ThemeMode.dark,
-                    icon: Icon(Icons.dark_mode_outlined),
-                    label: Text('深色'),
+                    icon: const Icon(Icons.dark_mode_outlined),
+                    label: Text(l10n.themeModeDark),
                   ),
                 ],
                 selected: {settings.themeMode},
@@ -54,8 +56,8 @@ class SettingsPage extends ConsumerWidget {
             ),
             const SizedBox(height: 20),
             _SettingBlock(
-              title: '主题色',
-              subtitle: 'Material 3 会用种子色生成完整配色。',
+              title: l10n.settingsThemeColorTitle,
+              subtitle: l10n.settingsThemeColorSubtitle,
               child: Wrap(
                 spacing: 10,
                 runSpacing: 10,
@@ -72,21 +74,21 @@ class SettingsPage extends ConsumerWidget {
           ],
         ),
         SectionCard(
-          title: '体验',
+          title: l10n.settingsExperienceTitle,
           icon: Icons.tune_outlined,
           children: [
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('OLED 深色增强'),
-              subtitle: const Text('深色模式下使用更纯的黑色 surface。'),
+              title: Text(l10n.settingsPureBlackTitle),
+              subtitle: Text(l10n.settingsPureBlackSubtitle),
               value: settings.pureBlackDarkMode,
               onChanged: controller.setPureBlackDarkMode,
             ),
             const Divider(),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
-              title: const Text('紧凑密度'),
-              subtitle: const Text('让桌面端和信息密集页面更克制。'),
+              title: Text(l10n.settingsCompactDensityTitle),
+              subtitle: Text(l10n.settingsCompactDensitySubtitle),
               value: settings.compactDensity,
               onChanged: controller.setCompactDensity,
             ),
@@ -199,7 +201,7 @@ class _ErrorBanner extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                '设置保存失败：$error',
+                context.l10n.settingsSaveFailed(error),
                 style: TextStyle(color: scheme.onErrorContainer),
               ),
             ),

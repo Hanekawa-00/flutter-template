@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/localization/localization_extensions.dart';
 import '../../core/settings/settings_providers.dart';
+import '../../shared/widgets/app_state_views.dart';
 import '../../shared/widgets/page_frame.dart';
 import '../../shared/widgets/section_card.dart';
 
@@ -11,14 +13,15 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
     final settings = ref.watch(appSettingsControllerProvider);
     final scheme = Theme.of(context).colorScheme;
 
     return PageFrame(
-      title: 'Flutter Template',
-      subtitle: '跨平台应用模板，保留通用能力，业务功能从这里继续生长。',
+      title: l10n.homeTitle,
+      subtitle: l10n.homeSubtitle,
       trailing: IconButton.filledTonal(
-        tooltip: '打开设置',
+        tooltip: l10n.openSettingsTooltip,
         onPressed: () => context.go('/settings'),
         icon: const Icon(Icons.tune),
       ),
@@ -30,23 +33,23 @@ class HomePage extends ConsumerWidget {
             final cards = [
               _CapabilityCard(
                 icon: Icons.devices_rounded,
-                title: '跨平台基线',
-                description: 'Android、iOS、Web、Windows、macOS、Linux 平台目录已生成。',
+                title: l10n.capabilityCrossPlatformTitle,
+                description: l10n.capabilityCrossPlatformDescription,
               ),
               _CapabilityCard(
                 icon: Icons.palette_outlined,
-                title: '主题系统',
-                description: '支持系统/浅色/深色、种子色、OLED 深色和紧凑密度。',
+                title: l10n.capabilityThemeTitle,
+                description: l10n.capabilityThemeDescription,
               ),
               _CapabilityCard(
                 icon: Icons.route_outlined,
-                title: '路由骨架',
-                description: 'go_router Shell 已接好，移动端底栏，宽屏侧边导航。',
+                title: l10n.capabilityRoutingTitle,
+                description: l10n.capabilityRoutingDescription,
               ),
               _CapabilityCard(
                 icon: Icons.extension_outlined,
-                title: '扩展边界',
-                description: 'core、features、shared 分层，便于后续拆模块和接业务。',
+                title: l10n.capabilityExtensionTitle,
+                description: l10n.capabilityExtensionDescription,
               ),
             ];
 
@@ -73,22 +76,21 @@ class HomePage extends ConsumerWidget {
           },
         ),
         SectionCard(
-          title: '推荐下一步',
+          title: l10n.nextStepsTitle,
           icon: Icons.checklist_rounded,
           children: [
-            _NextStepTile(
-              color: scheme.primary,
-              label: '把第一个业务页面放到 lib/src/features/<feature_name>',
-            ),
+            _NextStepTile(color: scheme.primary, label: l10n.nextStepFeature),
             _NextStepTile(
               color: scheme.tertiary,
-              label: '为数据源新增 repository，并在 Riverpod provider 中注入',
+              label: l10n.nextStepRepository,
             ),
-            _NextStepTile(
-              color: scheme.secondary,
-              label: '需要复杂桌面能力时，再按需引入窗口、托盘或热键插件',
-            ),
+            _NextStepTile(color: scheme.secondary, label: l10n.nextStepDesktop),
           ],
+        ),
+        SectionCard(
+          title: l10n.stateComponentsTitle,
+          icon: Icons.widgets_outlined,
+          children: const [SizedBox(height: 220, child: AppEmptyState())],
         ),
       ],
     );
@@ -103,6 +105,7 @@ class _StatusPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final l10n = context.l10n;
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -131,14 +134,14 @@ class _StatusPanel extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isLoading ? '正在加载设置' : '模板已就绪',
+                  isLoading ? l10n.homeStatusLoading : l10n.homeStatusReady,
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: scheme.onPrimaryContainer,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  '这里刻意不放业务假数据，只展示模板当前已经具备的通用能力。',
+                  l10n.homeStatusDescription,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: scheme.onPrimaryContainer,
                   ),

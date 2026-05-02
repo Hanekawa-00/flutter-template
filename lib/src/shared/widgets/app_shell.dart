@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../core/localization/localization_extensions.dart';
+
 class AppShell extends StatelessWidget {
   const AppShell({super.key, required this.location, required this.child});
 
@@ -10,19 +12,16 @@ class AppShell extends StatelessWidget {
   static const _destinations = [
     _ShellDestination(
       path: '/',
-      label: '首页',
       icon: Icons.dashboard_outlined,
       selectedIcon: Icons.dashboard,
     ),
     _ShellDestination(
       path: '/settings',
-      label: '设置',
       icon: Icons.tune_outlined,
       selectedIcon: Icons.tune,
     ),
     _ShellDestination(
       path: '/about',
-      label: '关于',
       icon: Icons.info_outline,
       selectedIcon: Icons.info,
     ),
@@ -52,7 +51,7 @@ class AppShell extends StatelessWidget {
                       NavigationRailDestination(
                         icon: Icon(destination.icon),
                         selectedIcon: Icon(destination.selectedIcon),
-                        label: Text(destination.label),
+                        label: Text(destination.label(context)),
                       ),
                   ],
                   onDestinationSelected: (index) {
@@ -75,7 +74,7 @@ class AppShell extends StatelessWidget {
                 NavigationDestination(
                   icon: Icon(destination.icon),
                   selectedIcon: Icon(destination.selectedIcon),
-                  label: destination.label,
+                  label: destination.label(context),
                 ),
             ],
             onDestinationSelected: (index) {
@@ -96,15 +95,23 @@ class AppShell extends StatelessWidget {
 class _ShellDestination {
   const _ShellDestination({
     required this.path,
-    required this.label,
     required this.icon,
     required this.selectedIcon,
   });
 
   final String path;
-  final String label;
   final IconData icon;
   final IconData selectedIcon;
+
+  String label(BuildContext context) {
+    final l10n = context.l10n;
+
+    return switch (path) {
+      '/settings' => l10n.navSettings,
+      '/about' => l10n.navAbout,
+      _ => l10n.navHome,
+    };
+  }
 }
 
 class _AppMark extends StatelessWidget {
@@ -115,7 +122,7 @@ class _AppMark extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
 
     return Tooltip(
-      message: 'Flutter Template',
+      message: context.l10n.appTitle,
       child: Container(
         width: 44,
         height: 44,
