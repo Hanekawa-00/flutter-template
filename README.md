@@ -163,4 +163,4 @@ final profile = await cache.getValue('profile');
 
 ## License
 
-当前仓库尚未声明开源许可证。公开分发或接受外部贡献前，建议补充 `LICENSE` 文件。
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
