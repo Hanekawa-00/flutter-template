@@ -3,6 +3,7 @@ import 'package:window_manager/window_manager.dart';
 
 import '../../core/platform/app_platform.dart';
 import '../../core/localization/localization_extensions.dart';
+import '../../core/theme/app_design_tokens.dart';
 
 class DesktopWindowFrame extends StatefulWidget {
   const DesktopWindowFrame({super.key, required this.child});
@@ -58,15 +59,20 @@ class _DesktopWindowFrameState extends State<DesktopWindowFrame>
     }
 
     final scheme = Theme.of(context).colorScheme;
-    final content = Material(
-      color: scheme.surface,
-      child: DecoratedBox(
-        decoration: BoxDecoration(color: scheme.surface),
-        child: Column(
-          children: [
-            _DesktopTitleBar(isMaximized: _isMaximized),
-            Expanded(child: widget.child),
-          ],
+    final radii = Theme.of(context).radii;
+    final radius = _isMaximized ? 0.0 : radii.lg;
+    final content = ClipRRect(
+      borderRadius: BorderRadius.circular(radius),
+      child: Material(
+        color: scheme.surface,
+        child: DecoratedBox(
+          decoration: BoxDecoration(color: scheme.surface),
+          child: Column(
+            children: [
+              _DesktopTitleBar(isMaximized: _isMaximized),
+              Expanded(child: widget.child),
+            ],
+          ),
         ),
       ),
     );
@@ -75,7 +81,13 @@ class _DesktopWindowFrameState extends State<DesktopWindowFrame>
       return content;
     }
 
-    return DragToResizeArea(resizeEdgeSize: 6, child: content);
+    return DragToResizeArea(
+      resizeEdgeSize: 6,
+      child: ColoredBox(
+        color: Colors.transparent,
+        child: Padding(padding: const EdgeInsets.all(1), child: content),
+      ),
+    );
   }
 }
 
