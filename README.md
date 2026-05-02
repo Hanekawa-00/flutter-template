@@ -53,6 +53,8 @@ dart run scripts/new_feature.dart profile
 
 更多约定见：
 
+- `AGENTS.md`
+- `docs/agent_development.md`
 - `docs/architecture.md`
 - `docs/design_system.md`
 - `docs/new_feature.md`

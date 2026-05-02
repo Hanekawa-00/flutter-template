@@ -3,6 +3,9 @@
 This template is organized around stable boundaries so new business code can
 grow without leaking infrastructure details into screens.
 
+For agent-specific workflow expectations, start with `AGENTS.md` and
+`docs/agent_development.md`.
+
 ## Layers
 
 ```text
