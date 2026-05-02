@@ -42,28 +42,30 @@ class AppShell extends StatelessWidget {
 
         if (useRail) {
           return Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.surface,
             body: Row(
               children: [
-                NavigationRail(
-                  selectedIndex: selectedIndex,
-                  extended: constraints.maxWidth >= 1080,
-                  leading: const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: _AppMark(),
+                _DesktopNavigationPane(
+                  child: NavigationRail(
+                    selectedIndex: selectedIndex,
+                    extended: constraints.maxWidth >= 1080,
+                    leading: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      child: _AppMark(),
+                    ),
+                    destinations: [
+                      for (final destination in _destinations)
+                        NavigationRailDestination(
+                          icon: Icon(destination.icon),
+                          selectedIcon: Icon(destination.selectedIcon),
+                          label: Text(destination.label(context)),
+                        ),
+                    ],
+                    onDestinationSelected: (index) {
+                      context.go(_destinations[index].path);
+                    },
                   ),
-                  destinations: [
-                    for (final destination in _destinations)
-                      NavigationRailDestination(
-                        icon: Icon(destination.icon),
-                        selectedIcon: Icon(destination.selectedIcon),
-                        label: Text(destination.label(context)),
-                      ),
-                  ],
-                  onDestinationSelected: (index) {
-                    context.go(_destinations[index].path);
-                  },
                 ),
-                const VerticalDivider(width: 1),
                 Expanded(child: child),
               ],
             ),
@@ -94,6 +96,29 @@ class AppShell extends StatelessWidget {
   int _selectedIndexFor(String location) {
     final index = _destinations.indexWhere((item) => item.path == location);
     return index < 0 ? 0 : index;
+  }
+}
+
+class _DesktopNavigationPane extends StatelessWidget {
+  const _DesktopNavigationPane({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: scheme.surface,
+        border: Border(
+          right: BorderSide(
+            color: scheme.outlineVariant.withValues(alpha: 0.28),
+          ),
+        ),
+      ),
+      child: child,
+    );
   }
 }
 

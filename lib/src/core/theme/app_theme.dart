@@ -93,7 +93,7 @@ class AppTheme {
       ),
       navigationRailTheme: NavigationRailThemeData(
         backgroundColor: scheme.surface,
-        indicatorColor: scheme.primaryContainer,
+        indicatorColor: scheme.primaryContainer.withValues(alpha: 0.82),
         selectedIconTheme: IconThemeData(color: scheme.onPrimaryContainer),
         selectedLabelTextStyle: TextStyle(
           color: scheme.onSurface,
