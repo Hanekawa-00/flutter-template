@@ -13,6 +13,8 @@
 - Flutter gen-l10n 中英文国际化基础设施
 - 加载、空状态、错误状态、确认弹窗等通用 UI 组件
 - GitHub Actions CI 与本地质量检查脚本
+- 固定环境入口：`main_development.dart`、`main_staging.dart`、`main_production.dart`
+- 功能模块脚手架：`dart run scripts/new_feature.dart <feature_name>`
 - `core`、`features`、`shared` 分层目录
 
 ## 结构
@@ -40,7 +42,21 @@ flutter run
 ```bash
 flutter run --dart-define=APP_ENV=staging
 flutter run --dart-define=APP_ENV=production --dart-define=APP_NAME=MyApp
+flutter run -t lib/main_staging.dart
 ```
+
+新增功能模块：
+
+```bash
+dart run scripts/new_feature.dart profile
+```
+
+更多约定见：
+
+- `docs/architecture.md`
+- `docs/design_system.md`
+- `docs/new_feature.md`
+- `docs/release.md`
 
 缓存使用示例：
 
