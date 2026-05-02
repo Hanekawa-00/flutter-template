@@ -88,46 +88,75 @@ class _StateViewShell extends StatelessWidget {
     final spacing = theme.spacing;
     final radii = theme.radii;
 
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 360),
-        child: Padding(
-          padding: EdgeInsets.all(spacing.xl),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 64,
-                height: 64,
-                decoration: BoxDecoration(
-                  color: scheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(radii.lg),
-                ),
-                child: Icon(icon, color: scheme.onPrimaryContainer),
-              ),
-              SizedBox(height: spacing.lg),
-              Text(
-                title,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact =
+            constraints.maxHeight < 260 || constraints.maxWidth < 320;
+        final padding = compact ? spacing.lg : spacing.xl;
+        final iconSize = compact ? 52.0 : 64.0;
+        final messageText = message == null
+            ? null
+            : Text(
+                message!,
                 textAlign: TextAlign.center,
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
+                maxLines: compact ? 2 : 4,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: scheme.onSurfaceVariant,
                 ),
-              ),
-              if (message != null) ...[
-                SizedBox(height: spacing.sm),
-                Text(
-                  message!,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: scheme.onSurfaceVariant,
+              );
+        final action = child == null
+            ? null
+            : Padding(
+                padding: EdgeInsets.only(top: spacing.md),
+                child: child,
+              );
+
+        return Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 360),
+            child: Padding(
+              padding: EdgeInsets.all(padding),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: iconSize,
+                    height: iconSize,
+                    decoration: BoxDecoration(
+                      color: scheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(radii.lg),
+                    ),
+                    child: Icon(icon, color: scheme.onPrimaryContainer),
                   ),
-                ),
-              ],
-              ?child,
-            ],
+                  SizedBox(height: compact ? spacing.md : spacing.lg),
+                  Text(
+                    title,
+                    textAlign: TextAlign.center,
+                    maxLines: compact ? 1 : 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  if (message != null) ...[
+                    SizedBox(height: spacing.sm),
+                    if (constraints.hasBoundedHeight)
+                      Flexible(child: messageText!)
+                    else
+                      messageText!,
+                  ],
+                  if (child != null)
+                    if (constraints.hasBoundedHeight)
+                      Flexible(child: action!)
+                    else
+                      action!,
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

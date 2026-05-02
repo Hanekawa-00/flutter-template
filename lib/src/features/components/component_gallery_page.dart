@@ -242,25 +242,31 @@ class _ControlStylePreviewState extends State<_ControlStylePreview> {
           ),
         ),
         SizedBox(height: spacing.lg),
-        SegmentedButton<String>(
-          segments: [
-            ButtonSegment(
-              value: 'compact',
-              icon: const Icon(Icons.view_agenda_outlined),
-              label: Text(l10n.componentsCompactChoice),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 0),
+            child: SegmentedButton<String>(
+              segments: [
+                ButtonSegment(
+                  value: 'compact',
+                  icon: const Icon(Icons.view_agenda_outlined),
+                  label: Text(l10n.componentsCompactChoice),
+                ),
+                ButtonSegment(
+                  value: 'comfortable',
+                  icon: const Icon(Icons.view_stream_outlined),
+                  label: Text(l10n.componentsComfortChoice),
+                ),
+              ],
+              selected: _selection,
+              onSelectionChanged: (value) {
+                setState(() {
+                  _selection = value;
+                });
+              },
             ),
-            ButtonSegment(
-              value: 'comfortable',
-              icon: const Icon(Icons.view_stream_outlined),
-              label: Text(l10n.componentsComfortChoice),
-            ),
-          ],
-          selected: _selection,
-          onSelectionChanged: (value) {
-            setState(() {
-              _selection = value;
-            });
-          },
+          ),
         ),
         SizedBox(height: spacing.lg),
         Row(
@@ -303,18 +309,31 @@ class _StatePreviewGrid extends StatelessWidget {
             ? 2
             : 1;
 
+        final panes = const [
+          _PreviewPane(child: AppLoadingView()),
+          _PreviewPane(child: AppEmptyState()),
+          _PreviewPane(child: AppErrorView()),
+        ];
+
+        if (columns == 1) {
+          return Column(
+            children: [
+              for (final pane in panes) ...[
+                SizedBox(height: 240, child: pane),
+                if (pane != panes.last) const SizedBox(height: 12),
+              ],
+            ],
+          );
+        }
+
         return GridView.count(
           crossAxisCount: columns,
           crossAxisSpacing: 12,
           mainAxisSpacing: 12,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          childAspectRatio: columns == 1 ? 1.9 : 1.35,
-          children: const [
-            _PreviewPane(child: AppLoadingView()),
-            _PreviewPane(child: AppEmptyState()),
-            _PreviewPane(child: AppErrorView()),
-          ],
+          childAspectRatio: 1.35,
+          children: panes,
         );
       },
     );
