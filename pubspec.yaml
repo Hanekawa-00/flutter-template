@@ -43,6 +43,7 @@ dependencies:
   dio: ^5.9.2
   hive_ce: ^2.19.3
   hive_ce_flutter: ^2.3.4
+  window_manager: ^0.5.1
 
 dev_dependencies:
   flutter_test:
