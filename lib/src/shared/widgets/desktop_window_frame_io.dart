@@ -63,11 +63,14 @@ class _DesktopWindowFrameState extends State<DesktopWindowFrame>
       resizeEdgeSize: _isMaximized ? 0 : 6,
       child: Material(
         color: scheme.surface,
-        child: Column(
-          children: [
-            _DesktopTitleBar(isMaximized: _isMaximized),
-            Expanded(child: widget.child),
-          ],
+        child: DecoratedBox(
+          decoration: BoxDecoration(color: scheme.surface),
+          child: Column(
+            children: [
+              _DesktopTitleBar(isMaximized: _isMaximized),
+              Expanded(child: widget.child),
+            ],
+          ),
         ),
       ),
     );
@@ -84,22 +87,15 @@ class _DesktopTitleBar extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
 
     return Container(
-      height: 44,
-      decoration: BoxDecoration(
-        color: scheme.surfaceContainer,
-        border: Border(
-          bottom: BorderSide(
-            color: scheme.outlineVariant.withValues(alpha: 0.5),
-          ),
-        ),
-      ),
+      height: 48,
+      color: scheme.surface,
       child: Row(
         children: [
           Expanded(
             child: DragToMoveArea(
               child: SizedBox.expand(
                 child: Padding(
-                  padding: const EdgeInsets.only(left: 16),
+                  padding: const EdgeInsets.only(left: 18),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Row(
@@ -132,17 +128,11 @@ class _DesktopTitleBar extends StatelessWidget {
             ),
           ),
           Container(
-            width: 144,
-            height: 44,
-            decoration: BoxDecoration(
-              color: scheme.surfaceContainer,
-              border: Border(
-                left: BorderSide(
-                  color: scheme.outlineVariant.withValues(alpha: 0.35),
-                ),
-              ),
-            ),
+            width: 156,
+            height: 48,
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 _WindowButton(
                   tooltip: 'Minimize',
@@ -201,12 +191,12 @@ class _WindowButtonState extends State<_WindowButton> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final background = widget.danger && _hovered
-        ? scheme.error
+        ? scheme.errorContainer
         : _hovered
-        ? scheme.surfaceContainerHighest
+        ? scheme.surfaceContainerHigh
         : Colors.transparent;
     final foreground = widget.danger && _hovered
-        ? scheme.onError
+        ? scheme.onErrorContainer
         : scheme.onSurfaceVariant;
 
     return Tooltip(
@@ -219,9 +209,13 @@ class _WindowButtonState extends State<_WindowButton> {
           onTap: widget.onPressed,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 120),
-            width: 48,
-            height: 44,
-            color: background,
+            width: 40,
+            height: 34,
+            margin: const EdgeInsets.symmetric(horizontal: 2),
+            decoration: BoxDecoration(
+              color: background,
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Icon(widget.icon, size: 18, color: foreground),
           ),
         ),
