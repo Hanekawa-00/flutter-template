@@ -139,6 +139,22 @@ class AppLocalizationsEn extends AppLocalizations {
       'Make desktop and information-dense pages more restrained.';
 
   @override
+  String get settingsResetAction => 'Reset';
+
+  @override
+  String get settingsResetTitle => 'Reset preferences';
+
+  @override
+  String get settingsResetMessage =>
+      'Theme, color, and experience options will return to the template defaults.';
+
+  @override
+  String get settingsResetConfirm => 'Reset';
+
+  @override
+  String get settingsResetSuccess => 'Preferences were reset';
+
+  @override
   String settingsSaveFailed(String error) {
     return 'Failed to save settings: $error';
   }
@@ -212,6 +228,27 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonCancel => 'Cancel';
 
   @override
+  String get commandPaletteSearchHint => 'Search pages or actions';
+
+  @override
+  String get commandPaletteNoResults => 'No matching actions';
+
+  @override
+  String get commandPaletteExecuted => 'Action executed';
+
+  @override
+  String get commandGoHome => 'Go to Home';
+
+  @override
+  String get commandGoSettings => 'Go to Settings';
+
+  @override
+  String get commandGoComponents => 'Go to Components';
+
+  @override
+  String get commandGoAbout => 'Go to About';
+
+  @override
   String get componentsTitle => 'Components';
 
   @override
@@ -246,6 +283,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get componentsOpenDialog => 'Open dialog';
+
+  @override
+  String get componentsFeedbackTitle => 'Feedback messages';
+
+  @override
+  String get componentsFeedbackDescription =>
+      'Use these for save success, lightweight reminders, and errors through the global ScaffoldMessenger.';
+
+  @override
+  String get componentsShowSuccess => 'Show success';
+
+  @override
+  String get componentsShowError => 'Show error';
+
+  @override
+  String get componentsSuccessToast => 'Action completed';
+
+  @override
+  String get componentsErrorToast => 'Action failed. Try again later';
+
+  @override
+  String get componentsStyleTitle => 'Control style';
+
+  @override
+  String get componentsStyleDescription =>
+      'Buttons, inputs, and selectors share one token system so feature UI stays consistent.';
+
+  @override
+  String get componentsPrimaryButton => 'Primary';
+
+  @override
+  String get componentsTonalButton => 'Tonal';
+
+  @override
+  String get componentsOutlineButton => 'Outline';
+
+  @override
+  String get componentsSearchLabel => 'Search';
+
+  @override
+  String get componentsCompactChoice => 'Compact';
+
+  @override
+  String get componentsComfortChoice => 'Comfort';
 
   @override
   String get stateRetry => 'Retry';

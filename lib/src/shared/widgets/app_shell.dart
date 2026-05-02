@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/localization/localization_extensions.dart';
+import '../../core/theme/app_design_tokens.dart';
 
 class AppShell extends StatelessWidget {
   const AppShell({super.key, required this.location, required this.child});
@@ -110,10 +111,10 @@ class _DesktopNavigationPane extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: scheme.surface,
+        color: scheme.surfaceContainerLowest,
         border: Border(
           right: BorderSide(
-            color: scheme.outlineVariant.withValues(alpha: 0.28),
+            color: scheme.outlineVariant.withValues(alpha: 0.22),
           ),
         ),
       ),
@@ -151,6 +152,7 @@ class _AppMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final radii = Theme.of(context).radii;
 
     return Tooltip(
       message: context.l10n.appTitle,
@@ -159,7 +161,7 @@ class _AppMark extends StatelessWidget {
         height: 44,
         decoration: BoxDecoration(
           color: scheme.primaryContainer,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(radii.md),
         ),
         child: Icon(Icons.layers_rounded, color: scheme.onPrimaryContainer),
       ),

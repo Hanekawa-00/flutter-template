@@ -4,6 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/localization/localization_extensions.dart';
 import '../../core/settings/app_settings.dart';
 import '../../core/settings/settings_providers.dart';
+import '../../core/theme/app_design_tokens.dart';
+import '../../shared/services/app_messenger.dart';
+import '../../shared/widgets/confirm_action_dialog.dart';
 import '../../shared/widgets/page_frame.dart';
 import '../../shared/widgets/section_card.dart';
 
@@ -20,6 +23,31 @@ class SettingsPage extends ConsumerWidget {
     return PageFrame(
       title: l10n.settingsTitle,
       subtitle: l10n.settingsSubtitle,
+      trailing: OutlinedButton.icon(
+        onPressed: () async {
+          final confirmed = await ConfirmActionDialog.show(
+            context,
+            title: l10n.settingsResetTitle,
+            message: l10n.settingsResetMessage,
+            confirmLabel: l10n.settingsResetConfirm,
+            cancelLabel: l10n.commonCancel,
+          );
+
+          if (!confirmed || !context.mounted) {
+            return;
+          }
+
+          await controller.reset();
+
+          if (!context.mounted) {
+            return;
+          }
+
+          AppMessenger.showSuccess(context, l10n.settingsResetSuccess);
+        },
+        icon: const Icon(Icons.restart_alt),
+        label: Text(l10n.settingsResetAction),
+      ),
       children: [
         if (asyncSettings.hasError)
           _ErrorBanner(error: asyncSettings.error.toString()),
@@ -54,7 +82,7 @@ class SettingsPage extends ConsumerWidget {
                 },
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: Theme.of(context).spacing.xl),
             _SettingBlock(
               title: l10n.settingsThemeColorTitle,
               subtitle: l10n.settingsThemeColorSubtitle,
@@ -77,20 +105,23 @@ class SettingsPage extends ConsumerWidget {
           title: l10n.settingsExperienceTitle,
           icon: Icons.tune_outlined,
           children: [
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
+            _PreferenceTile(
+              icon: Icons.contrast_rounded,
               title: Text(l10n.settingsPureBlackTitle),
               subtitle: Text(l10n.settingsPureBlackSubtitle),
-              value: settings.pureBlackDarkMode,
-              onChanged: controller.setPureBlackDarkMode,
+              trailing: Switch(
+                value: settings.pureBlackDarkMode,
+                onChanged: controller.setPureBlackDarkMode,
+              ),
             ),
-            const Divider(),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
+            _PreferenceTile(
+              icon: Icons.density_medium_outlined,
               title: Text(l10n.settingsCompactDensityTitle),
               subtitle: Text(l10n.settingsCompactDensitySubtitle),
-              value: settings.compactDensity,
-              onChanged: controller.setCompactDensity,
+              trailing: Switch(
+                value: settings.compactDensity,
+                onChanged: controller.setCompactDensity,
+              ),
             ),
           ],
         ),
@@ -112,22 +143,66 @@ class _SettingBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final spacing = theme.spacing;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: Theme.of(context).textTheme.titleSmall),
-        const SizedBox(height: 4),
+        SizedBox(height: spacing.xs),
         Text(
           subtitle,
           style: Theme.of(
             context,
           ).textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: spacing.md),
         child,
       ],
+    );
+  }
+}
+
+class _PreferenceTile extends StatelessWidget {
+  const _PreferenceTile({
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.trailing,
+  });
+
+  final IconData icon;
+  final Widget title;
+  final Widget subtitle;
+  final Widget trailing;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final spacing = theme.spacing;
+    final radii = theme.radii;
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: spacing.sm),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: scheme.surfaceContainerLow,
+          borderRadius: BorderRadius.circular(radii.lg),
+        ),
+        child: ListTile(
+          leading: Icon(icon, color: scheme.primary),
+          title: title,
+          subtitle: subtitle,
+          trailing: trailing,
+          contentPadding: EdgeInsets.symmetric(
+            horizontal: spacing.lg,
+            vertical: spacing.sm,
+          ),
+        ),
+      ),
     );
   }
 }

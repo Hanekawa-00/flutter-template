@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/localization/localization_extensions.dart';
+import '../../core/theme/app_design_tokens.dart';
+import '../../shared/services/app_messenger.dart';
 import '../../shared/widgets/app_async_value_builder.dart';
 import '../../shared/widgets/app_state_views.dart';
 import '../../shared/widgets/confirm_action_dialog.dart';
@@ -31,6 +33,11 @@ class _ComponentGalleryPageState extends State<ComponentGalleryPage> {
           title: l10n.componentsStatesTitle,
           icon: Icons.auto_awesome_motion_outlined,
           children: const [_StatePreviewGrid()],
+        ),
+        SectionCard(
+          title: l10n.componentsStyleTitle,
+          icon: Icons.interests_outlined,
+          children: const [_ControlStylePreview()],
         ),
         SectionCard(
           title: l10n.componentsAsyncTitle,
@@ -110,6 +117,42 @@ class _ComponentGalleryPageState extends State<ComponentGalleryPage> {
           ],
         ),
         SectionCard(
+          title: l10n.componentsFeedbackTitle,
+          icon: Icons.notifications_active_outlined,
+          children: [
+            Text(
+              l10n.componentsFeedbackDescription,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: scheme.onSurfaceVariant),
+            ),
+            const SizedBox(height: 16),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                FilledButton.icon(
+                  onPressed: () {
+                    AppMessenger.showSuccess(
+                      context,
+                      l10n.componentsSuccessToast,
+                    );
+                  },
+                  icon: const Icon(Icons.check_circle_outline),
+                  label: Text(l10n.componentsShowSuccess),
+                ),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    AppMessenger.showError(context, l10n.componentsErrorToast);
+                  },
+                  icon: const Icon(Icons.error_outline),
+                  label: Text(l10n.componentsShowError),
+                ),
+              ],
+            ),
+          ],
+        ),
+        SectionCard(
           title: l10n.componentsDialogsTitle,
           icon: Icons.chat_bubble_outline,
           children: [
@@ -132,6 +175,113 @@ class _ComponentGalleryPageState extends State<ComponentGalleryPage> {
               },
               icon: const Icon(Icons.open_in_new),
               label: Text(l10n.componentsOpenDialog),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _ControlStylePreview extends StatefulWidget {
+  const _ControlStylePreview();
+
+  @override
+  State<_ControlStylePreview> createState() => _ControlStylePreviewState();
+}
+
+class _ControlStylePreviewState extends State<_ControlStylePreview> {
+  double _progress = 0.62;
+  bool _enabled = true;
+  Set<String> _selection = const {'comfortable'};
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = context.l10n;
+    final scheme = theme.colorScheme;
+    final spacing = theme.spacing;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          context.l10n.componentsStyleDescription,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: scheme.onSurfaceVariant,
+          ),
+        ),
+        SizedBox(height: spacing.lg),
+        Wrap(
+          spacing: spacing.md,
+          runSpacing: spacing.md,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            FilledButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.play_arrow_rounded),
+              label: Text(l10n.componentsPrimaryButton),
+            ),
+            FilledButton.tonalIcon(
+              onPressed: () {},
+              icon: const Icon(Icons.auto_awesome_outlined),
+              label: Text(l10n.componentsTonalButton),
+            ),
+            OutlinedButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.tune_outlined),
+              label: Text(l10n.componentsOutlineButton),
+            ),
+          ],
+        ),
+        SizedBox(height: spacing.lg),
+        TextField(
+          decoration: InputDecoration(
+            labelText: l10n.componentsSearchLabel,
+            prefixIcon: const Icon(Icons.search),
+          ),
+        ),
+        SizedBox(height: spacing.lg),
+        SegmentedButton<String>(
+          segments: [
+            ButtonSegment(
+              value: 'compact',
+              icon: const Icon(Icons.view_agenda_outlined),
+              label: Text(l10n.componentsCompactChoice),
+            ),
+            ButtonSegment(
+              value: 'comfortable',
+              icon: const Icon(Icons.view_stream_outlined),
+              label: Text(l10n.componentsComfortChoice),
+            ),
+          ],
+          selected: _selection,
+          onSelectionChanged: (value) {
+            setState(() {
+              _selection = value;
+            });
+          },
+        ),
+        SizedBox(height: spacing.lg),
+        Row(
+          children: [
+            Expanded(
+              child: Slider(
+                value: _progress,
+                onChanged: (value) {
+                  setState(() {
+                    _progress = value;
+                  });
+                },
+              ),
+            ),
+            Switch(
+              value: _enabled,
+              onChanged: (value) {
+                setState(() {
+                  _enabled = value;
+                });
+              },
             ),
           ],
         ),

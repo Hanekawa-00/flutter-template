@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_design_tokens.dart';
+
 class PageFrame extends StatelessWidget {
   const PageFrame({
     super.key,
@@ -16,12 +18,19 @@ class PageFrame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final spacing = Theme.of(context).spacing;
+
     return SafeArea(
       bottom: false,
       child: CustomScrollView(
         slivers: [
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
+            padding: EdgeInsets.fromLTRB(
+              spacing.xl,
+              spacing.xl,
+              spacing.xl,
+              spacing.sm,
+            ),
             sliver: SliverToBoxAdapter(
               child: _PageHeader(
                 title: title,
@@ -31,10 +40,16 @@ class PageFrame extends StatelessWidget {
             ),
           ),
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+            padding: EdgeInsets.fromLTRB(
+              spacing.xl,
+              spacing.sm,
+              spacing.xl,
+              spacing.xxl,
+            ),
             sliver: SliverList.separated(
               itemBuilder: (context, index) => children[index],
-              separatorBuilder: (context, index) => const SizedBox(height: 16),
+              separatorBuilder: (context, index) =>
+                  SizedBox(height: spacing.lg),
               itemCount: children.length,
             ),
           ),
@@ -53,7 +68,9 @@ class _PageHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    final spacing = theme.spacing;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,20 +79,25 @@ class _PageHeader extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(title, style: textTheme.headlineMedium),
+              Text(
+                title,
+                style: textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
               if (subtitle != null) ...[
-                const SizedBox(height: 6),
+                SizedBox(height: spacing.sm),
                 Text(
                   subtitle!,
                   style: textTheme.bodyLarge?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    color: theme.colorScheme.onSurfaceVariant,
                   ),
                 ),
               ],
             ],
           ),
         ),
-        if (trailing != null) ...[const SizedBox(width: 16), trailing!],
+        if (trailing != null) ...[SizedBox(width: spacing.lg), trailing!],
       ],
     );
   }

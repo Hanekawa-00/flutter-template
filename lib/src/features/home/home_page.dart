@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/localization/localization_extensions.dart';
 import '../../core/settings/settings_providers.dart';
+import '../../core/theme/app_design_tokens.dart';
 import '../../shared/widgets/app_state_views.dart';
 import '../../shared/widgets/page_frame.dart';
 import '../../shared/widgets/section_card.dart';
@@ -16,6 +17,7 @@ class HomePage extends ConsumerWidget {
     final l10n = context.l10n;
     final settings = ref.watch(appSettingsControllerProvider);
     final scheme = Theme.of(context).colorScheme;
+    final spacing = Theme.of(context).spacing;
 
     return PageFrame(
       title: l10n.homeTitle,
@@ -58,7 +60,7 @@ class HomePage extends ConsumerWidget {
                 children: [
                   for (final card in cards) ...[
                     card,
-                    if (card != cards.last) const SizedBox(height: 12),
+                    if (card != cards.last) SizedBox(height: spacing.md),
                   ],
                 ],
               );
@@ -66,8 +68,8 @@ class HomePage extends ConsumerWidget {
 
             return GridView.count(
               crossAxisCount: 2,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
+              crossAxisSpacing: spacing.md,
+              mainAxisSpacing: spacing.md,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               childAspectRatio: 2.5,
@@ -105,13 +107,16 @@ class _StatusPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final spacing = theme.spacing;
+    final radii = theme.radii;
     final l10n = context.l10n;
 
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(spacing.xl),
       decoration: BoxDecoration(
         color: scheme.primaryContainer,
-        borderRadius: BorderRadius.circular(32),
+        borderRadius: BorderRadius.circular(radii.xl),
       ),
       child: Row(
         children: [
@@ -128,7 +133,7 @@ class _StatusPanel extends StatelessWidget {
               size: 34,
             ),
           ),
-          const SizedBox(width: 20),
+          SizedBox(width: spacing.xl),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +144,7 @@ class _StatusPanel extends StatelessWidget {
                     color: scheme.onPrimaryContainer,
                   ),
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: spacing.sm),
                 Text(
                   l10n.homeStatusDescription,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -169,25 +174,40 @@ class _CapabilityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final spacing = theme.spacing;
+    final radii = theme.radii;
 
-    return Card(
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(radii.xl),
+        border: Border.all(
+          color: scheme.outlineVariant.withValues(alpha: 0.35),
+        ),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(18),
+        padding: EdgeInsets.all(spacing.lg),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Icon(icon, color: scheme.primary),
-            const SizedBox(width: 14),
+            SizedBox(width: spacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(title, style: Theme.of(context).textTheme.titleMedium),
-                  const SizedBox(height: 6),
+                  Text(
+                    title,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(height: spacing.sm),
                   Text(
                     description,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: theme.textTheme.bodyMedium?.copyWith(
                       color: scheme.onSurfaceVariant,
                     ),
                   ),
