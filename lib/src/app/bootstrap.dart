@@ -7,6 +7,8 @@ import '../core/routing/app_router.dart';
 import '../core/settings/app_settings.dart';
 import '../core/settings/settings_providers.dart';
 import '../core/theme/app_theme.dart';
+import '../shared/services/app_messenger.dart';
+import '../shared/widgets/app_command_palette.dart';
 import '../shared/widgets/desktop_window_frame.dart';
 
 class AppBootstrap extends ConsumerWidget {
@@ -30,9 +32,13 @@ class AppBootstrap extends ConsumerWidget {
       theme: AppTheme.light(settings),
       darkTheme: AppTheme.dark(settings),
       routerConfig: router,
+      scaffoldMessengerKey: AppMessenger.scaffoldMessengerKey,
       builder: (context, child) {
         return DesktopWindowFrame(
-          child: _AppScrollBehavior(child: child ?? const SizedBox.shrink()),
+          child: AppCommandPalette(
+            router: router,
+            child: _AppScrollBehavior(child: child ?? const SizedBox.shrink()),
+          ),
         );
       },
     );

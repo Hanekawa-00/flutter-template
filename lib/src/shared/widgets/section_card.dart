@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/theme/app_design_tokens.dart';
+
 class SectionCard extends StatelessWidget {
   const SectionCard({
     super.key,
@@ -14,11 +16,21 @@ class SectionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final scheme = Theme.of(context).colorScheme;
+    final spacing = theme.spacing;
+    final radii = theme.radii;
 
-    return Card(
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(radii.xl),
+        border: Border.all(
+          color: scheme.outlineVariant.withValues(alpha: 0.38),
+        ),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(spacing.xl),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -32,20 +44,22 @@ class SectionCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(99),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: spacing.md),
                 if (icon != null) ...[
                   Icon(icon, size: 20, color: scheme.primary),
-                  const SizedBox(width: 8),
+                  SizedBox(width: spacing.sm),
                 ],
                 Expanded(
                   child: Text(
                     title,
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: spacing.lg),
             ...children,
           ],
         ),

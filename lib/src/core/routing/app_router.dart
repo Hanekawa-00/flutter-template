@@ -27,14 +27,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => const SettingsPage(),
           ),
           GoRoute(
+            path: '/settings/about',
+            name: 'settings-about',
+            builder: (context, state) => const AboutPage(),
+          ),
+          GoRoute(
             path: '/components',
             name: 'components',
             builder: (context, state) => const ComponentGalleryPage(),
-          ),
-          GoRoute(
-            path: '/about',
-            name: 'about',
-            builder: (context, state) => const AboutPage(),
           ),
         ],
       ),

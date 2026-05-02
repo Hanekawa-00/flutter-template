@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/localization/localization_extensions.dart';
+import '../../core/theme/app_design_tokens.dart';
 
 class AppLoadingView extends StatelessWidget {
   const AppLoadingView({super.key, this.message});
@@ -83,12 +84,15 @@ class _StateViewShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    final spacing = theme.spacing;
+    final radii = theme.radii;
 
     return Center(
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 360),
         child: Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(spacing.xl),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -97,22 +101,24 @@ class _StateViewShell extends StatelessWidget {
                 height: 64,
                 decoration: BoxDecoration(
                   color: scheme.primaryContainer,
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(radii.lg),
                 ),
                 child: Icon(icon, color: scheme.onPrimaryContainer),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: spacing.lg),
               Text(
                 title,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               if (message != null) ...[
-                const SizedBox(height: 8),
+                SizedBox(height: spacing.sm),
                 Text(
                   message!,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  style: theme.textTheme.bodyMedium?.copyWith(
                     color: scheme.onSurfaceVariant,
                   ),
                 ),

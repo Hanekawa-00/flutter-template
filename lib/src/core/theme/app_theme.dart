@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../settings/app_settings.dart';
+import 'app_design_tokens.dart';
 
 class AppTheme {
   const AppTheme._();
@@ -14,12 +15,20 @@ class AppTheme {
       seedColor: settings.colorPreset.seedColor,
       brightness: Brightness.dark,
     );
+    final softenedScheme = colorScheme.copyWith(
+      surface: const Color(0xFF101310),
+      surfaceContainerLowest: const Color(0xFF0B0E0B),
+      surfaceContainerLow: const Color(0xFF141811),
+      surfaceContainer: const Color(0xFF191E16),
+      surfaceContainerHigh: const Color(0xFF20261C),
+      surfaceContainerHighest: const Color(0xFF293024),
+    );
 
     return _theme(
       settings: settings,
       brightness: Brightness.dark,
       colorScheme: settings.pureBlackDarkMode
-          ? colorScheme.copyWith(
+          ? softenedScheme.copyWith(
               surface: Colors.black,
               surfaceContainerLowest: Colors.black,
               surfaceContainerLow: const Color(0xFF080808),
@@ -27,7 +36,7 @@ class AppTheme {
               surfaceContainerHigh: const Color(0xFF161616),
               surfaceContainerHighest: const Color(0xFF1E1E1E),
             )
-          : colorScheme,
+          : softenedScheme,
     );
   }
 
@@ -42,10 +51,27 @@ class AppTheme {
           seedColor: settings.colorPreset.seedColor,
           brightness: brightness,
         );
-    final radius = _AppRadii();
+    final radii = const AppRadii.regular();
+    final spacing = settings.compactDensity
+        ? const AppSpacing.compact()
+        : const AppSpacing.regular();
     final density = settings.compactDensity
         ? VisualDensity.compact
         : VisualDensity.standard;
+    final typography = Typography.material2021(
+      platform: TargetPlatform.android,
+      colorScheme: scheme,
+    );
+    final textTheme =
+        (brightness == Brightness.dark ? typography.white : typography.black)
+            .apply(
+              fontFamilyFallback: const [
+                'Microsoft YaHei UI',
+                'Segoe UI',
+                'PingFang SC',
+                'Noto Sans CJK SC',
+              ],
+            );
 
     return ThemeData(
       useMaterial3: true,
@@ -53,6 +79,8 @@ class AppTheme {
       colorScheme: scheme,
       scaffoldBackgroundColor: scheme.surface,
       visualDensity: density,
+      extensions: [spacing, radii, const AppMotion.standard()],
+      textTheme: textTheme,
       appBarTheme: AppBarTheme(
         centerTitle: false,
         elevation: 0,
@@ -65,30 +93,51 @@ class AppTheme {
         color: scheme.surfaceContainer,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radius.large),
+          borderRadius: BorderRadius.circular(radii.xl),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           shape: const StadiumBorder(),
-          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+          padding: EdgeInsets.symmetric(
+            horizontal: spacing.xl,
+            vertical: spacing.lg,
+          ),
         ),
       ),
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(radius.medium),
+            borderRadius: BorderRadius.circular(radii.md),
           ),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: scheme.surfaceContainerLow,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(radii.md),
+          borderSide: BorderSide(color: scheme.outlineVariant),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(radii.md),
+          borderSide: BorderSide(
+            color: scheme.outlineVariant.withValues(alpha: 0.65),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(radii.md),
+          borderSide: BorderSide(color: scheme.primary, width: 1.5),
         ),
       ),
       listTileTheme: ListTileThemeData(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(radius.medium),
+          borderRadius: BorderRadius.circular(radii.md),
         ),
       ),
       navigationBarTheme: NavigationBarThemeData(
         elevation: 0,
-        backgroundColor: scheme.surfaceContainer,
+        backgroundColor: scheme.surfaceContainerLow,
         indicatorColor: scheme.primaryContainer,
       ),
       navigationRailTheme: NavigationRailThemeData(
@@ -104,10 +153,24 @@ class AppTheme {
         style: ButtonStyle(
           shape: WidgetStatePropertyAll(
             RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(radius.medium),
+              borderRadius: BorderRadius.circular(radii.md),
             ),
           ),
         ),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(radii.md),
+        ),
+      ),
+      tooltipTheme: TooltipThemeData(
+        waitDuration: const Duration(milliseconds: 450),
+        decoration: BoxDecoration(
+          color: scheme.inverseSurface.withValues(alpha: 0.94),
+          borderRadius: BorderRadius.circular(radii.sm),
+        ),
+        textStyle: TextStyle(color: scheme.onInverseSurface),
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) {
@@ -125,9 +188,4 @@ class AppTheme {
       ),
     );
   }
-}
-
-class _AppRadii {
-  double get medium => 20;
-  double get large => 28;
 }

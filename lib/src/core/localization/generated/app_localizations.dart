@@ -128,6 +128,18 @@ abstract class AppLocalizations {
   /// **'关于'**
   String get navAbout;
 
+  /// No description provided for @navCollapseSidebar.
+  ///
+  /// In zh, this message translates to:
+  /// **'折叠侧边栏'**
+  String get navCollapseSidebar;
+
+  /// No description provided for @navExpandSidebar.
+  ///
+  /// In zh, this message translates to:
+  /// **'展开侧边栏'**
+  String get navExpandSidebar;
+
   /// No description provided for @homeTitle.
   ///
   /// In zh, this message translates to:
@@ -332,6 +344,42 @@ abstract class AppLocalizations {
   /// **'让桌面端和信息密集页面更克制。'**
   String get settingsCompactDensitySubtitle;
 
+  /// No description provided for @settingsOtherTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'其他'**
+  String get settingsOtherTitle;
+
+  /// No description provided for @settingsResetAction.
+  ///
+  /// In zh, this message translates to:
+  /// **'重置'**
+  String get settingsResetAction;
+
+  /// No description provided for @settingsResetTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'重置偏好设置'**
+  String get settingsResetTitle;
+
+  /// No description provided for @settingsResetMessage.
+  ///
+  /// In zh, this message translates to:
+  /// **'主题、颜色和体验选项会恢复为模板默认值。'**
+  String get settingsResetMessage;
+
+  /// No description provided for @settingsResetConfirm.
+  ///
+  /// In zh, this message translates to:
+  /// **'重置'**
+  String get settingsResetConfirm;
+
+  /// No description provided for @settingsResetSuccess.
+  ///
+  /// In zh, this message translates to:
+  /// **'偏好设置已重置'**
+  String get settingsResetSuccess;
+
   /// No description provided for @settingsSaveFailed.
   ///
   /// In zh, this message translates to:
@@ -349,6 +397,12 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'一个偏通用、可扩展、跨平台优先的 Flutter 模板。'**
   String get aboutSubtitle;
+
+  /// No description provided for @aboutBackToSettings.
+  ///
+  /// In zh, this message translates to:
+  /// **'返回设置'**
+  String get aboutBackToSettings;
 
   /// No description provided for @aboutStructureTitle.
   ///
@@ -470,6 +524,48 @@ abstract class AppLocalizations {
   /// **'取消'**
   String get commonCancel;
 
+  /// No description provided for @commandPaletteSearchHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'搜索页面或操作'**
+  String get commandPaletteSearchHint;
+
+  /// No description provided for @commandPaletteNoResults.
+  ///
+  /// In zh, this message translates to:
+  /// **'没有匹配的操作'**
+  String get commandPaletteNoResults;
+
+  /// No description provided for @commandPaletteExecuted.
+  ///
+  /// In zh, this message translates to:
+  /// **'已执行操作'**
+  String get commandPaletteExecuted;
+
+  /// No description provided for @commandGoHome.
+  ///
+  /// In zh, this message translates to:
+  /// **'前往首页'**
+  String get commandGoHome;
+
+  /// No description provided for @commandGoSettings.
+  ///
+  /// In zh, this message translates to:
+  /// **'前往设置'**
+  String get commandGoSettings;
+
+  /// No description provided for @commandGoComponents.
+  ///
+  /// In zh, this message translates to:
+  /// **'前往组件'**
+  String get commandGoComponents;
+
+  /// No description provided for @commandGoAbout.
+  ///
+  /// In zh, this message translates to:
+  /// **'前往关于'**
+  String get commandGoAbout;
+
   /// No description provided for @componentsTitle.
   ///
   /// In zh, this message translates to:
@@ -535,6 +631,90 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'打开弹窗'**
   String get componentsOpenDialog;
+
+  /// No description provided for @componentsFeedbackTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'反馈提示'**
+  String get componentsFeedbackTitle;
+
+  /// No description provided for @componentsFeedbackDescription.
+  ///
+  /// In zh, this message translates to:
+  /// **'用于保存成功、轻量提醒和错误提示，默认走全局 ScaffoldMessenger。'**
+  String get componentsFeedbackDescription;
+
+  /// No description provided for @componentsShowSuccess.
+  ///
+  /// In zh, this message translates to:
+  /// **'成功提示'**
+  String get componentsShowSuccess;
+
+  /// No description provided for @componentsShowError.
+  ///
+  /// In zh, this message translates to:
+  /// **'错误提示'**
+  String get componentsShowError;
+
+  /// No description provided for @componentsSuccessToast.
+  ///
+  /// In zh, this message translates to:
+  /// **'操作已完成'**
+  String get componentsSuccessToast;
+
+  /// No description provided for @componentsErrorToast.
+  ///
+  /// In zh, this message translates to:
+  /// **'操作失败，请稍后重试'**
+  String get componentsErrorToast;
+
+  /// No description provided for @componentsStyleTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'控件样式'**
+  String get componentsStyleTitle;
+
+  /// No description provided for @componentsStyleDescription.
+  ///
+  /// In zh, this message translates to:
+  /// **'按钮、输入框和选择器使用统一 token，便于业务组件保持一致。'**
+  String get componentsStyleDescription;
+
+  /// No description provided for @componentsPrimaryButton.
+  ///
+  /// In zh, this message translates to:
+  /// **'主要'**
+  String get componentsPrimaryButton;
+
+  /// No description provided for @componentsTonalButton.
+  ///
+  /// In zh, this message translates to:
+  /// **'次要'**
+  String get componentsTonalButton;
+
+  /// No description provided for @componentsOutlineButton.
+  ///
+  /// In zh, this message translates to:
+  /// **'描边'**
+  String get componentsOutlineButton;
+
+  /// No description provided for @componentsSearchLabel.
+  ///
+  /// In zh, this message translates to:
+  /// **'搜索'**
+  String get componentsSearchLabel;
+
+  /// No description provided for @componentsCompactChoice.
+  ///
+  /// In zh, this message translates to:
+  /// **'紧凑'**
+  String get componentsCompactChoice;
+
+  /// No description provided for @componentsComfortChoice.
+  ///
+  /// In zh, this message translates to:
+  /// **'舒适'**
+  String get componentsComfortChoice;
 
   /// No description provided for @stateRetry.
   ///

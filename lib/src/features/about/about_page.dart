@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../core/config/config_providers.dart';
@@ -18,6 +19,11 @@ class AboutPage extends ConsumerWidget {
     return PageFrame(
       title: l10n.aboutTitle,
       subtitle: l10n.aboutSubtitle,
+      trailing: OutlinedButton.icon(
+        onPressed: () => context.go('/settings'),
+        icon: const Icon(Icons.arrow_back_rounded),
+        label: Text(l10n.aboutBackToSettings),
+      ),
       children: [
         SectionCard(
           title: l10n.aboutStructureTitle,

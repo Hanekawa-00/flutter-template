@@ -24,6 +24,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get navAbout => '关于';
 
   @override
+  String get navCollapseSidebar => '折叠侧边栏';
+
+  @override
+  String get navExpandSidebar => '展开侧边栏';
+
+  @override
   String get homeTitle => 'Flutter Template';
 
   @override
@@ -129,6 +135,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsCompactDensitySubtitle => '让桌面端和信息密集页面更克制。';
 
   @override
+  String get settingsOtherTitle => '其他';
+
+  @override
+  String get settingsResetAction => '重置';
+
+  @override
+  String get settingsResetTitle => '重置偏好设置';
+
+  @override
+  String get settingsResetMessage => '主题、颜色和体验选项会恢复为模板默认值。';
+
+  @override
+  String get settingsResetConfirm => '重置';
+
+  @override
+  String get settingsResetSuccess => '偏好设置已重置';
+
+  @override
   String settingsSaveFailed(String error) {
     return '设置保存失败：$error';
   }
@@ -138,6 +162,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get aboutSubtitle => '一个偏通用、可扩展、跨平台优先的 Flutter 模板。';
+
+  @override
+  String get aboutBackToSettings => '返回设置';
 
   @override
   String get aboutStructureTitle => '项目结构';
@@ -200,6 +227,27 @@ class AppLocalizationsZh extends AppLocalizations {
   String get commonCancel => '取消';
 
   @override
+  String get commandPaletteSearchHint => '搜索页面或操作';
+
+  @override
+  String get commandPaletteNoResults => '没有匹配的操作';
+
+  @override
+  String get commandPaletteExecuted => '已执行操作';
+
+  @override
+  String get commandGoHome => '前往首页';
+
+  @override
+  String get commandGoSettings => '前往设置';
+
+  @override
+  String get commandGoComponents => '前往组件';
+
+  @override
+  String get commandGoAbout => '前往关于';
+
+  @override
   String get componentsTitle => '组件';
 
   @override
@@ -231,6 +279,49 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get componentsOpenDialog => '打开弹窗';
+
+  @override
+  String get componentsFeedbackTitle => '反馈提示';
+
+  @override
+  String get componentsFeedbackDescription =>
+      '用于保存成功、轻量提醒和错误提示，默认走全局 ScaffoldMessenger。';
+
+  @override
+  String get componentsShowSuccess => '成功提示';
+
+  @override
+  String get componentsShowError => '错误提示';
+
+  @override
+  String get componentsSuccessToast => '操作已完成';
+
+  @override
+  String get componentsErrorToast => '操作失败，请稍后重试';
+
+  @override
+  String get componentsStyleTitle => '控件样式';
+
+  @override
+  String get componentsStyleDescription => '按钮、输入框和选择器使用统一 token，便于业务组件保持一致。';
+
+  @override
+  String get componentsPrimaryButton => '主要';
+
+  @override
+  String get componentsTonalButton => '次要';
+
+  @override
+  String get componentsOutlineButton => '描边';
+
+  @override
+  String get componentsSearchLabel => '搜索';
+
+  @override
+  String get componentsCompactChoice => '紧凑';
+
+  @override
+  String get componentsComfortChoice => '舒适';
 
   @override
   String get stateRetry => '重试';

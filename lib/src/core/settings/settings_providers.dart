@@ -36,6 +36,10 @@ class AppSettingsController extends AsyncNotifier<AppSettings> {
     return _update((settings) => settings.copyWith(compactDensity: enabled));
   }
 
+  Future<void> reset() {
+    return _update((settings) => AppSettings.defaults());
+  }
+
   Future<void> _update(AppSettings Function(AppSettings) update) async {
     final repository = ref.read(settingsRepositoryProvider);
     final previous = state.asData?.value ?? AppSettings.defaults();
