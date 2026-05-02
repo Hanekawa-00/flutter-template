@@ -20,6 +20,7 @@ class HomePage extends ConsumerWidget {
     final spacing = Theme.of(context).spacing;
 
     return PageFrame(
+      storageId: 'home',
       title: l10n.homeTitle,
       subtitle: l10n.homeSubtitle,
       trailing: IconButton.filledTonal(

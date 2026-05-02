@@ -26,6 +26,7 @@ class _ComponentGalleryPageState extends State<ComponentGalleryPage> {
     final scheme = Theme.of(context).colorScheme;
 
     return PageFrame(
+      storageId: 'components',
       title: l10n.componentsTitle,
       subtitle: l10n.componentsSubtitle,
       children: [

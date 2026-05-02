@@ -7,10 +7,14 @@ import '../../core/theme/app_design_tokens.dart';
 import '../services/app_messenger.dart';
 
 class AppShell extends StatefulWidget {
-  const AppShell({super.key, required this.location, required this.child});
+  const AppShell({
+    super.key,
+    required this.location,
+    required this.navigationShell,
+  });
 
   final String location;
-  final Widget child;
+  final StatefulNavigationShell navigationShell;
 
   static const _destinations = [
     _ShellDestination(
@@ -37,12 +41,17 @@ class AppShell extends StatefulWidget {
 class _AppShellState extends State<AppShell> {
   static const _exitBackInterval = Duration(seconds: 2);
 
+  final PageStorageBucket _pageStorageBucket = PageStorageBucket();
   bool? _desktopNavigationExpanded;
   DateTime? _lastTopLevelBackAt;
 
   @override
   Widget build(BuildContext context) {
-    final selectedIndex = _selectedIndexFor(widget.location);
+    final selectedIndex = widget.navigationShell.currentIndex;
+    final body = PageStorage(
+      bucket: _pageStorageBucket,
+      child: widget.navigationShell,
+    );
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -82,10 +91,10 @@ class _AppShellState extends State<AppShell> {
                           _toggleDesktopNavigation(extended);
                         },
                         onDestinationSelected: (index) {
-                          context.go(AppShell._destinations[index].path);
+                          _goBranch(index, selectedIndex);
                         },
                       ),
-                      Expanded(child: _DesktopContentPane(child: widget.child)),
+                      Expanded(child: _DesktopContentPane(child: body)),
                     ],
                   ),
                 ),
@@ -112,9 +121,9 @@ class _AppShellState extends State<AppShell> {
               location: widget.location,
               title: _titleFor(context, widget.location),
               showBackButton: !showMobileBottomNavigation,
-              onBack: () => context.go(_parentPathFor(widget.location)),
+              onBack: () => _returnToParent(context),
             ),
-            body: widget.child,
+            body: body,
             bottomNavigationBar: showMobileBottomNavigation
                 ? NavigationBar(
                     selectedIndex: selectedIndex,
@@ -127,7 +136,7 @@ class _AppShellState extends State<AppShell> {
                         ),
                     ],
                     onDestinationSelected: (index) {
-                      context.go(AppShell._destinations[index].path);
+                      _goBranch(index, selectedIndex);
                     },
                   )
                 : null,
@@ -137,27 +146,23 @@ class _AppShellState extends State<AppShell> {
     );
   }
 
-  int _selectedIndexFor(String location) {
-    final index = AppShell._destinations.indexWhere((item) {
-      if (item.path == '/') {
-        return location == '/';
-      }
-
-      return location == item.path || location.startsWith('${item.path}/');
-    });
-    return index < 0 ? 0 : index;
-  }
-
   void _toggleDesktopNavigation(bool extended) {
     setState(() {
       _desktopNavigationExpanded = !extended;
     });
   }
 
+  void _goBranch(int index, int selectedIndex) {
+    widget.navigationShell.goBranch(
+      index,
+      initialLocation: index == selectedIndex,
+    );
+  }
+
   void _handleMobileBack(BuildContext context, {required bool isTopLevel}) {
     if (!isTopLevel) {
       _lastTopLevelBackAt = null;
-      context.go(_parentPathFor(widget.location));
+      _returnToParent(context);
       return;
     }
 
@@ -173,6 +178,15 @@ class _AppShellState extends State<AppShell> {
 
     _lastTopLevelBackAt = now;
     AppMessenger.showInfo(context, context.l10n.backAgainToExit);
+  }
+
+  void _returnToParent(BuildContext context) {
+    if (context.canPop()) {
+      context.pop();
+      return;
+    }
+
+    context.go(_parentPathFor(widget.location));
   }
 
   bool _showsMobileBottomNavigation(String location) {

@@ -197,6 +197,50 @@ void main() {
 
     expect(find.text('Back to settings'), findsOneWidget);
   });
+
+  testWidgets('desktop keeps page scroll when leaving and returning', (
+    tester,
+  ) async {
+    _setDesktopViewport(tester);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(
+            _FakeSettingsRepository(),
+          ),
+        ],
+        child: const AppBootstrap(),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Settings'));
+    await tester.pumpAndSettle();
+    await tester.fling(
+      find.byType(CustomScrollView),
+      const Offset(0, -900),
+      900,
+    );
+    await tester.pumpAndSettle();
+    final settingsOffset = _pageScrollOffset(tester);
+
+    expect(settingsOffset, greaterThan(0));
+
+    await tester.tap(find.text('Home'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Settings'));
+    await tester.pumpAndSettle();
+
+    expect(_pageScrollOffset(tester), greaterThan(settingsOffset * 0.7));
+
+    await tester.tap(find.text('About').last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Back to settings'));
+    await tester.pumpAndSettle();
+
+    expect(_pageScrollOffset(tester), greaterThan(settingsOffset * 0.7));
+  });
 }
 
 void _setMobileViewport(WidgetTester tester) {
@@ -211,6 +255,15 @@ void _setDesktopViewport(WidgetTester tester) {
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
+}
+
+double _pageScrollOffset(WidgetTester tester) {
+  final scrollable = find.descendant(
+    of: find.byType(CustomScrollView),
+    matching: find.byType(Scrollable),
+  );
+
+  return tester.state<ScrollableState>(scrollable).position.pixels;
 }
 
 class _FakeSettingsRepository implements AppSettingsRepository {
