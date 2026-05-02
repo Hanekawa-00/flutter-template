@@ -58,8 +58,7 @@ class _DesktopWindowFrameState extends State<DesktopWindowFrame>
     }
 
     final scheme = Theme.of(context).colorScheme;
-
-    return Material(
+    final content = Material(
       color: scheme.surface,
       child: DecoratedBox(
         decoration: BoxDecoration(color: scheme.surface),
@@ -71,6 +70,12 @@ class _DesktopWindowFrameState extends State<DesktopWindowFrame>
         ),
       ),
     );
+
+    if (_isMaximized) {
+      return content;
+    }
+
+    return DragToResizeArea(resizeEdgeSize: 6, child: content);
   }
 }
 

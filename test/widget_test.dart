@@ -107,6 +107,31 @@ void main() {
     expect(find.text('Press back again to exit'), findsOneWidget);
   });
 
+  testWidgets('mobile component gallery adapts to narrow screens', (
+    tester,
+  ) async {
+    _setMobileViewport(tester);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(
+            _FakeSettingsRepository(),
+          ),
+        ],
+        child: const AppBootstrap(),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Components'));
+    await tester.pump(const Duration(milliseconds: 300));
+
+    expect(find.text('Components'), findsWidgets);
+    expect(find.byType(NavigationBar), findsOneWidget);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('desktop settings keeps reset only in content', (tester) async {
     _setDesktopViewport(tester);
 
