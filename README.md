@@ -120,6 +120,15 @@ flutter build windows --release -t lib/main_production.dart
 flutter build apk --release --split-per-abi -t lib/main_production.dart
 ```
 
+发布 Release：
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+推送 `v*` tag 后，GitHub Actions 会构建 Web、Windows x64 和 Android split ABI APK，并把产物上传到 GitHub Release。
+
 ## 缓存示例
 
 ```dart
