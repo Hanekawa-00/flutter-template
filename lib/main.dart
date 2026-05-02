@@ -6,9 +6,11 @@ import 'src/core/config/app_config.dart';
 import 'src/core/errors/app_error_boundary.dart';
 import 'src/core/logging/app_logger.dart';
 import 'src/core/logging/provider_logger.dart';
+import 'src/core/windowing/desktop_window.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await configureDesktopWindow();
 
   final config = AppConfig.fromEnvironment();
   final logger = AppLogger(
