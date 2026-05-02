@@ -20,32 +20,33 @@ class SettingsPage extends ConsumerWidget {
     final asyncSettings = ref.watch(appSettingsControllerProvider);
     final settings = asyncSettings.asData?.value ?? AppSettings.defaults();
     final controller = ref.read(appSettingsControllerProvider.notifier);
+    Future<void> resetSettings() async {
+      final confirmed = await ConfirmActionDialog.show(
+        context,
+        title: l10n.settingsResetTitle,
+        message: l10n.settingsResetMessage,
+        confirmLabel: l10n.settingsResetConfirm,
+        cancelLabel: l10n.commonCancel,
+      );
+
+      if (!confirmed || !context.mounted) {
+        return;
+      }
+
+      await controller.reset();
+
+      if (!context.mounted) {
+        return;
+      }
+
+      AppMessenger.showSuccess(context, l10n.settingsResetSuccess);
+    }
 
     return PageFrame(
       title: l10n.settingsTitle,
       subtitle: l10n.settingsSubtitle,
       trailing: OutlinedButton.icon(
-        onPressed: () async {
-          final confirmed = await ConfirmActionDialog.show(
-            context,
-            title: l10n.settingsResetTitle,
-            message: l10n.settingsResetMessage,
-            confirmLabel: l10n.settingsResetConfirm,
-            cancelLabel: l10n.commonCancel,
-          );
-
-          if (!confirmed || !context.mounted) {
-            return;
-          }
-
-          await controller.reset();
-
-          if (!context.mounted) {
-            return;
-          }
-
-          AppMessenger.showSuccess(context, l10n.settingsResetSuccess);
-        },
+        onPressed: resetSettings,
         icon: const Icon(Icons.restart_alt),
         label: Text(l10n.settingsResetAction),
       ),
@@ -114,6 +115,9 @@ class SettingsPage extends ConsumerWidget {
                 value: settings.pureBlackDarkMode,
                 onChanged: controller.setPureBlackDarkMode,
               ),
+              onTap: () {
+                controller.setPureBlackDarkMode(!settings.pureBlackDarkMode);
+              },
             ),
             _PreferenceTile(
               icon: Icons.density_medium_outlined,
@@ -123,6 +127,9 @@ class SettingsPage extends ConsumerWidget {
                 value: settings.compactDensity,
                 onChanged: controller.setCompactDensity,
               ),
+              onTap: () {
+                controller.setCompactDensity(!settings.compactDensity);
+              },
             ),
           ],
         ),
@@ -136,6 +143,13 @@ class SettingsPage extends ConsumerWidget {
               subtitle: Text(l10n.aboutSubtitle),
               trailing: const Icon(Icons.chevron_right_rounded),
               onTap: () => context.go('/settings/about'),
+            ),
+            _PreferenceTile(
+              icon: Icons.restart_alt_rounded,
+              title: Text(l10n.settingsResetTitle),
+              subtitle: Text(l10n.settingsResetMessage),
+              trailing: const Icon(Icons.chevron_right_rounded),
+              onTap: resetSettings,
             ),
           ],
         ),

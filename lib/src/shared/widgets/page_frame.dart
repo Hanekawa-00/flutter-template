@@ -19,31 +19,34 @@ class PageFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final spacing = Theme.of(context).spacing;
+    final compact = MediaQuery.sizeOf(context).width < 760;
 
     return SafeArea(
+      top: !compact,
       bottom: false,
       child: CustomScrollView(
         slivers: [
-          SliverPadding(
-            padding: EdgeInsets.fromLTRB(
-              spacing.xl,
-              spacing.xl,
-              spacing.xl,
-              spacing.sm,
-            ),
-            sliver: SliverToBoxAdapter(
-              child: _PageHeader(
-                title: title,
-                subtitle: subtitle,
-                trailing: trailing,
+          if (!compact)
+            SliverPadding(
+              padding: EdgeInsets.fromLTRB(
+                spacing.xl,
+                spacing.xl,
+                spacing.xl,
+                spacing.sm,
+              ),
+              sliver: SliverToBoxAdapter(
+                child: _PageHeader(
+                  title: title,
+                  subtitle: subtitle,
+                  trailing: trailing,
+                ),
               ),
             ),
-          ),
           SliverPadding(
             padding: EdgeInsets.fromLTRB(
-              spacing.xl,
-              spacing.sm,
-              spacing.xl,
+              compact ? spacing.lg : spacing.xl,
+              compact ? spacing.lg : spacing.sm,
+              compact ? spacing.lg : spacing.xl,
               spacing.xxl,
             ),
             sliver: SliverList.separated(

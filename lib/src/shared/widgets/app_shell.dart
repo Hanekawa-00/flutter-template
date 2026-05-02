@@ -90,22 +90,34 @@ class _AppShellState extends State<AppShell> {
           );
         }
 
+        final showMobileBottomNavigation = _showsMobileBottomNavigation(
+          widget.location,
+        );
+
         return Scaffold(
-          body: widget.child,
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: selectedIndex,
-            destinations: [
-              for (final destination in AppShell._destinations)
-                NavigationDestination(
-                  icon: Icon(destination.icon),
-                  selectedIcon: Icon(destination.selectedIcon),
-                  label: destination.label(context),
-                ),
-            ],
-            onDestinationSelected: (index) {
-              context.go(AppShell._destinations[index].path);
-            },
+          appBar: _MobileTopAppBar(
+            location: widget.location,
+            title: _titleFor(context, widget.location),
+            showBackButton: !showMobileBottomNavigation,
+            onBack: () => context.go(_parentPathFor(widget.location)),
           ),
+          body: widget.child,
+          bottomNavigationBar: showMobileBottomNavigation
+              ? NavigationBar(
+                  selectedIndex: selectedIndex,
+                  destinations: [
+                    for (final destination in AppShell._destinations)
+                      NavigationDestination(
+                        icon: Icon(destination.icon),
+                        selectedIcon: Icon(destination.selectedIcon),
+                        label: destination.label(context),
+                      ),
+                  ],
+                  onDestinationSelected: (index) {
+                    context.go(AppShell._destinations[index].path);
+                  },
+                )
+              : null,
         );
       },
     );
@@ -127,10 +139,104 @@ class _AppShellState extends State<AppShell> {
       _desktopNavigationExpanded = !extended;
     });
   }
+
+  bool _showsMobileBottomNavigation(String location) {
+    return AppShell._destinations.any((item) => item.path == location);
+  }
+
+  String _titleFor(BuildContext context, String location) {
+    final l10n = context.l10n;
+
+    if (location == '/') {
+      return l10n.homeTitle;
+    }
+
+    if (location.startsWith('/settings/about')) {
+      return l10n.aboutTitle;
+    }
+
+    if (location.startsWith('/settings')) {
+      return l10n.settingsTitle;
+    }
+
+    if (location.startsWith('/components')) {
+      return l10n.componentsTitle;
+    }
+
+    final destination = AppShell._destinations.firstWhere((item) {
+      if (item.path == '/') {
+        return location == '/';
+      }
+
+      return location == item.path || location.startsWith('${item.path}/');
+    }, orElse: () => AppShell._destinations.first);
+
+    return destination.label(context);
+  }
+
+  String _parentPathFor(String location) {
+    if (location.startsWith('/settings/')) {
+      return '/settings';
+    }
+
+    return '/';
+  }
 }
 
 class _ToggleDesktopNavigationIntent extends Intent {
   const _ToggleDesktopNavigationIntent();
+}
+
+class _MobileTopAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _MobileTopAppBar({
+    required this.location,
+    required this.title,
+    required this.showBackButton,
+    required this.onBack,
+  });
+
+  final String location;
+  final String title;
+  final bool showBackButton;
+  final VoidCallback onBack;
+
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+
+    return AppBar(
+      automaticallyImplyLeading: false,
+      leading: showBackButton
+          ? IconButton(
+              tooltip: MaterialLocalizations.of(context).backButtonTooltip,
+              onPressed: onBack,
+              icon: const Icon(Icons.arrow_back_rounded),
+            )
+          : null,
+      title: Text(title),
+      actions: [
+        if (location == '/')
+          IconButton(
+            tooltip: context.l10n.openSettingsTooltip,
+            onPressed: () => context.go('/settings'),
+            icon: const Icon(Icons.tune_rounded),
+          ),
+      ],
+      flexibleSpace: DecoratedBox(
+        decoration: BoxDecoration(
+          color: scheme.surface.withValues(alpha: 0.96),
+          border: Border(
+            bottom: BorderSide(
+              color: scheme.outlineVariant.withValues(alpha: 0.24),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _DesktopShellBackground extends StatelessWidget {
