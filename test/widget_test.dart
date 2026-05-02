@@ -25,6 +25,103 @@ void main() {
     expect(find.text('Template ready'), findsOneWidget);
     expect(find.byIcon(Icons.tune), findsWidgets);
   });
+
+  testWidgets('mobile top-level pages keep bottom navigation', (tester) async {
+    _setMobileViewport(tester);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(
+            _FakeSettingsRepository(),
+          ),
+        ],
+        child: const AppBootstrap(),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AppBar), findsOneWidget);
+    expect(find.byType(NavigationBar), findsOneWidget);
+    expect(find.text('Flutter Template'), findsWidgets);
+  });
+
+  testWidgets('mobile settings subpage hides bottom navigation', (
+    tester,
+  ) async {
+    _setMobileViewport(tester);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(
+            _FakeSettingsRepository(),
+          ),
+        ],
+        child: const AppBootstrap(),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Settings'));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text('About'), 520);
+    await Scrollable.ensureVisible(
+      tester.element(find.text('About')),
+      alignment: 0.5,
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('About'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(NavigationBar), findsNothing);
+    expect(find.byIcon(Icons.arrow_back_rounded), findsOneWidget);
+    expect(find.text('About'), findsOneWidget);
+  });
+
+  testWidgets('desktop page actions stay available after scrolling', (
+    tester,
+  ) async {
+    _setDesktopViewport(tester);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          settingsRepositoryProvider.overrideWithValue(
+            _FakeSettingsRepository(),
+          ),
+        ],
+        child: const AppBootstrap(),
+      ),
+    );
+
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Settings'));
+    await tester.pumpAndSettle();
+    await tester.fling(
+      find.byType(CustomScrollView),
+      const Offset(0, -900),
+      900,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Reset'), findsWidgets);
+  });
+}
+
+void _setMobileViewport(WidgetTester tester) {
+  tester.view.physicalSize = const Size(390, 844);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.resetPhysicalSize);
+  addTearDown(tester.view.resetDevicePixelRatio);
+}
+
+void _setDesktopViewport(WidgetTester tester) {
+  tester.view.physicalSize = const Size(1200, 800);
+  tester.view.devicePixelRatio = 1;
+  addTearDown(tester.view.resetPhysicalSize);
+  addTearDown(tester.view.resetDevicePixelRatio);
 }
 
 class _FakeSettingsRepository implements AppSettingsRepository {
