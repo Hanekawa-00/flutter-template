@@ -21,6 +21,11 @@ class AppShell extends StatelessWidget {
       selectedIcon: Icons.tune,
     ),
     _ShellDestination(
+      path: '/components',
+      icon: Icons.widgets_outlined,
+      selectedIcon: Icons.widgets,
+    ),
+    _ShellDestination(
       path: '/about',
       icon: Icons.info_outline,
       selectedIcon: Icons.info,
@@ -108,6 +113,7 @@ class _ShellDestination {
 
     return switch (path) {
       '/settings' => l10n.navSettings,
+      '/components' => l10n.navComponents,
       '/about' => l10n.navAbout,
       _ => l10n.navHome,
     };

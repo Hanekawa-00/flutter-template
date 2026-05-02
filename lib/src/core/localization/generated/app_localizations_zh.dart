@@ -18,6 +18,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get navSettings => '设置';
 
   @override
+  String get navComponents => '组件';
+
+  @override
   String get navAbout => '关于';
 
   @override
@@ -189,6 +192,45 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get commonDisabled => '关闭';
+
+  @override
+  String get commonConfirm => '确认';
+
+  @override
+  String get commonCancel => '取消';
+
+  @override
+  String get componentsTitle => '组件';
+
+  @override
+  String get componentsSubtitle => '跨平台预览模板内置的通用 UI 状态和交互组件。';
+
+  @override
+  String get componentsStatesTitle => '状态视图';
+
+  @override
+  String get componentsAsyncTitle => 'AsyncValue 视图';
+
+  @override
+  String get componentsAsyncData => '数据';
+
+  @override
+  String get componentsAsyncReady => '数据状态已就绪';
+
+  @override
+  String get componentsDialogsTitle => '确认弹窗';
+
+  @override
+  String get componentsDialogsDescription => '用于危险操作、退出确认、删除确认等需要明确选择的场景。';
+
+  @override
+  String get componentsDialogTitle => '确认操作';
+
+  @override
+  String get componentsDialogMessage => '这是一个模板确认弹窗，业务侧可以替换标题、正文和按钮。';
+
+  @override
+  String get componentsOpenDialog => '打开弹窗';
 
   @override
   String get stateRetry => '重试';

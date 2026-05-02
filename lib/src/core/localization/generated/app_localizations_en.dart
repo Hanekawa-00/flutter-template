@@ -18,6 +18,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navSettings => 'Settings';
 
   @override
+  String get navComponents => 'Components';
+
+  @override
   String get navAbout => 'About';
 
   @override
@@ -201,6 +204,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get commonDisabled => 'Disabled';
+
+  @override
+  String get commonConfirm => 'Confirm';
+
+  @override
+  String get commonCancel => 'Cancel';
+
+  @override
+  String get componentsTitle => 'Components';
+
+  @override
+  String get componentsSubtitle =>
+      'Preview the template\'s reusable UI states and interaction components across platforms.';
+
+  @override
+  String get componentsStatesTitle => 'State views';
+
+  @override
+  String get componentsAsyncTitle => 'AsyncValue views';
+
+  @override
+  String get componentsAsyncData => 'Data';
+
+  @override
+  String get componentsAsyncReady => 'Data state is ready';
+
+  @override
+  String get componentsDialogsTitle => 'Confirm dialogs';
+
+  @override
+  String get componentsDialogsDescription =>
+      'Use this for dangerous actions, exit prompts, deletion prompts, and other explicit choices.';
+
+  @override
+  String get componentsDialogTitle => 'Confirm action';
+
+  @override
+  String get componentsDialogMessage =>
+      'This is a template confirm dialog. Feature code can replace the title, message, and labels.';
+
+  @override
+  String get componentsOpenDialog => 'Open dialog';
 
   @override
   String get stateRetry => 'Retry';

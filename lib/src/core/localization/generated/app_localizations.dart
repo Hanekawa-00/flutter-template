@@ -116,6 +116,12 @@ abstract class AppLocalizations {
   /// **'设置'**
   String get navSettings;
 
+  /// No description provided for @navComponents.
+  ///
+  /// In zh, this message translates to:
+  /// **'组件'**
+  String get navComponents;
+
   /// No description provided for @navAbout.
   ///
   /// In zh, this message translates to:
@@ -451,6 +457,84 @@ abstract class AppLocalizations {
   /// In zh, this message translates to:
   /// **'关闭'**
   String get commonDisabled;
+
+  /// No description provided for @commonConfirm.
+  ///
+  /// In zh, this message translates to:
+  /// **'确认'**
+  String get commonConfirm;
+
+  /// No description provided for @commonCancel.
+  ///
+  /// In zh, this message translates to:
+  /// **'取消'**
+  String get commonCancel;
+
+  /// No description provided for @componentsTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'组件'**
+  String get componentsTitle;
+
+  /// No description provided for @componentsSubtitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'跨平台预览模板内置的通用 UI 状态和交互组件。'**
+  String get componentsSubtitle;
+
+  /// No description provided for @componentsStatesTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'状态视图'**
+  String get componentsStatesTitle;
+
+  /// No description provided for @componentsAsyncTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'AsyncValue 视图'**
+  String get componentsAsyncTitle;
+
+  /// No description provided for @componentsAsyncData.
+  ///
+  /// In zh, this message translates to:
+  /// **'数据'**
+  String get componentsAsyncData;
+
+  /// No description provided for @componentsAsyncReady.
+  ///
+  /// In zh, this message translates to:
+  /// **'数据状态已就绪'**
+  String get componentsAsyncReady;
+
+  /// No description provided for @componentsDialogsTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'确认弹窗'**
+  String get componentsDialogsTitle;
+
+  /// No description provided for @componentsDialogsDescription.
+  ///
+  /// In zh, this message translates to:
+  /// **'用于危险操作、退出确认、删除确认等需要明确选择的场景。'**
+  String get componentsDialogsDescription;
+
+  /// No description provided for @componentsDialogTitle.
+  ///
+  /// In zh, this message translates to:
+  /// **'确认操作'**
+  String get componentsDialogTitle;
+
+  /// No description provided for @componentsDialogMessage.
+  ///
+  /// In zh, this message translates to:
+  /// **'这是一个模板确认弹窗，业务侧可以替换标题、正文和按钮。'**
+  String get componentsDialogMessage;
+
+  /// No description provided for @componentsOpenDialog.
+  ///
+  /// In zh, this message translates to:
+  /// **'打开弹窗'**
+  String get componentsOpenDialog;
 
   /// No description provided for @stateRetry.
   ///
